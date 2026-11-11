@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#17152b">
+    <meta name="description" content="Carte de profil de Joyce Kabe, lycéenne et passionnée d'animes et de mangas à N'Djamena.">
+    <link rel="stylesheet" href="cartedeprofil.css">
+    <title>Joyce Kabe — Carte de profil</title>
+</head>
+<body>
+    <div class="page-backdrop" aria-hidden="true">
+        <video class="backdrop-video" src="anime-combat.mp4" muted loop playsinline preload="metadata"></video>
+        <div class="backdrop-shade"></div>
+    </div>
+    <main class="profile-page">
+        <article class="profile-card" aria-labelledby="profile-name">
+            <div class="card-art" id="anime-carousel" role="region" aria-roledescription="carrousel" aria-label="Illustrations d'anime">
+                <div class="hero-slides">
+                    <figure class="hero-slide is-active" aria-hidden="false">
+                        <img src="gojo1.jpg" alt="Illustration de Satoru Gojo aux cheveux blancs et aux yeux bleus">
+                    </figure>
+                    <figure class="hero-slide" aria-hidden="true">
+                        <img src="gojo satoru.jpg" alt="Illustration de Satoru Gojo dans un décor bleu lumineux">
+                    </figure>
+                </div>
+                <div class="hero-shade"></div>
+                <span class="art-orbit orbit-one" aria-hidden="true"></span>
+                <span class="art-orbit orbit-two" aria-hidden="true"></span>
+                <span class="art-star star-one" aria-hidden="true">✦</span>
+                <span class="art-star star-two" aria-hidden="true">✧</span>
+                <div class="hero-caption">
+                    <span class="art-label">SON UNIVERS ANIME</span>
+                    <strong>Gojo Satoru</strong>
+                    <span class="hero-subtitle">Un personnage qu'elle adore ✦</span>
+                </div>
+                <div class="hero-controls" aria-label="Choisir une illustration">
+                    <button class="hero-dot is-active" type="button" aria-label="Afficher l'illustration 1" aria-pressed="true"></button>
+                    <button class="hero-dot" type="button" aria-label="Afficher l'illustration 2" aria-pressed="false"></button>
+                </div>
+            </div>
+
+            <div class="profile-content">
+                <button class="portrait-frame" id="portrait-button" type="button" aria-label="Envoyer des cœurs à Joyce">
+                    <img
+                        class="portrait"
+                        src="photo.png"
+                        alt="Portrait de Joyce Kabe"
+                        width="180"
+                        height="180"
+                    >
+                    <span class="portrait-status" aria-label="Passionnée d'anime"></span>
+                </button>
+
+                <p class="profile-kicker">PETIT PORTRAIT</p>
+                <h1 id="profile-name">Joyce <span>Kabe</span></h1>
+                <p class="profile-subtitle">Lycéenne · passionnée d'animes et de mangas</p>
+
+                <div class="location">
+                    <span aria-hidden="true">⌖</span>
+                    <span>N'Djamena, Tchad</span>
+                    <span class="flag" role="img" aria-label="Drapeau du Tchad">🇹🇩</span>
+                </div>
+
+                <div class="divider"></div>
+
+                <section class="about" aria-labelledby="about-title">
+                    <h2 id="about-title">Salut, moi c'est Joyce !</h2>
+                    <p>
+                        Tchadienne et élève au lycée, j'aime plonger dans les univers
+                        des animes et découvrir de nouveaux mangas. Les histoires,
+                        les personnages et leur imagination me passionnent.
+                    </p>
+                </section>
+
+                <section class="interests" aria-labelledby="interests-title">
+                    <h2 id="interests-title">Ce que j'aime</h2>
+                    <ul class="interest-list">
+                        <li><span aria-hidden="true">✦</span> Animes</li>
+                        <li><span aria-hidden="true">▤</span> Mangas</li>
+                        <li><span aria-hidden="true">♡</span> Histoires captivantes</li>
+                    </ul>
+                </section>
+
+                <p class="card-signature">Fière de mes racines, curieuse de tous les mondes <span aria-hidden="true">✿</span></p>
+            </div>
+        </article>
+        <p class="page-note">CARTE DE PROFIL <span aria-hidden="true">✦</span></p>
+        <p class="creator-signature">Créé avec soin par <strong>MJ Park</strong></p>
+    </main>
+    <script>
+        (() => {
+            const backgroundVideo = document.querySelector(".backdrop-video");
+            const carousel = document.querySelector("#anime-carousel");
+            const slides = [...carousel.querySelectorAll(".hero-slide")];
+            const dots = [...carousel.querySelectorAll(".hero-dot")];
+            const portraitButton = document.querySelector("#portrait-button");
+            const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+            const sceneStart = 12;
+            const sceneEnd = 20;
+            const hearts = ["💖", "💕", "💗", "💜", "💘"];
+            let activeIndex = 0;
+            let timer;
+
+            backgroundVideo.addEventListener("error", () => {
+                console.warn("La vidéo d'arrière-plan n'a pas pu être chargée.");
+            });
+
+            backgroundVideo.addEventListener("loadedmetadata", () => {
+                if (backgroundVideo.duration > sceneEnd) {
+                    backgroundVideo.currentTime = sceneStart;
+                }
+                updateBackgroundVideo();
+            });
+
+            backgroundVideo.addEventListener("timeupdate", () => {
+                if (backgroundVideo.currentTime >= sceneEnd) {
+                    backgroundVideo.currentTime = sceneStart;
+                }
+            });
+
+            function updateBackgroundVideo() {
+                if (reducedMotion.matches || document.hidden) {
+                    backgroundVideo.pause();
+                } else if (backgroundVideo.src) {
+                    backgroundVideo.play().catch((error) => {
+                        console.warn("La vidéo d'arrière-plan n'a pas pu démarrer.", error);
+                    });
+                }
+            }
+
+            portraitButton.addEventListener("click", () => {
+                const burst = reducedMotion.matches ? 3 : 8;
+                for (let index = 0; index < burst; index += 1) {
+                    const heart = document.createElement("span");
+                    heart.className = "heart-particle";
+                    heart.setAttribute("aria-hidden", "true");
+                    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                    heart.style.setProperty("--heart-x", `${Math.round(Math.random() * 90 - 45)}px`);
+                    heart.style.setProperty("--heart-y", `${Math.round(-50 - Math.random() * 40)}px`);
+                    heart.style.setProperty("--heart-delay", `${index * 110}ms`);
+                    heart.addEventListener("animationend", () => heart.remove(), { once: true });
+                    portraitButton.append(heart);
+                }
+            });
+
+            function showSlide(index) {
+                activeIndex = (index + slides.length) % slides.length;
+                slides.forEach((slide, slideIndex) => {
+                    const active = slideIndex === activeIndex;
+                    slide.classList.toggle("is-active", active);
+                    slide.setAttribute("aria-hidden", String(!active));
+                });
+                dots.forEach((dot, dotIndex) => {
+                    const active = dotIndex === activeIndex;
+                    dot.classList.toggle("is-active", active);
+                    dot.setAttribute("aria-pressed", String(active));
+                });
+            }
+
+            function stopRotation() {
+                window.clearInterval(timer);
+            }
+
+            function startRotation() {
+                stopRotation();
+                if (!reducedMotion.matches && !document.hidden) {
+                    timer = window.setInterval(() => showSlide(activeIndex + 1), 6000);
+                }
+            }
+
+            dots.forEach((dot, index) => {
+                dot.addEventListener("click", () => {
+                    showSlide(index);
+                    startRotation();
+                });
+            });
+            carousel.addEventListener("mouseenter", stopRotation);
+            carousel.addEventListener("mouseleave", startRotation);
+            carousel.addEventListener("focusin", stopRotation);
+            carousel.addEventListener("focusout", startRotation);
+            document.addEventListener("visibilitychange", startRotation);
+            reducedMotion.addEventListener("change", startRotation);
+            document.addEventListener("visibilitychange", updateBackgroundVideo);
+            reducedMotion.addEventListener("change", updateBackgroundVideo);
+            updateBackgroundVideo();
+            startRotation();
+        })();
+    </script>
+</body>
+</html>
